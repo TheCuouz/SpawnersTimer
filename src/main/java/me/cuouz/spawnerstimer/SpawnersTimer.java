@@ -14,14 +14,14 @@ public class SpawnersTimer extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        if (!getConfig().contains("inicializado")) {
-            getConfig().set("inicializado", false);
+        if (!getConfig().contains("initialized")) {
+            getConfig().set("initialized", false);
             saveConfig();
         }
 
-        boolean inicializado = getConfig().getBoolean("inicializado");
-        if (inicializado) {
-            getLogger().warning("¡SpawnersTimer ya esta habilitado!");
+        boolean initialized = getConfig().getBoolean("initialized");
+        if (initialized) {
+            getLogger().warning("SpawnersTimer ya está habilitado.");
             getServer().getPluginManager().disablePlugin(this);
             return;
         }
@@ -32,10 +32,10 @@ public class SpawnersTimer extends JavaPlugin {
         getServer().getPluginManager().registerEvents(spawnerEventListener, this);
         getCommand("st").setExecutor(new SpawnerCommand(this));
 
-        getConfig().set("inicializado", true);
+        getConfig().set("initialized", true);
         saveConfig();
 
-        getLogger().info("¡SpawnersTimer se ha habilitado correctamente!");
+        getLogger().info("SpawnersTimer se ha habilitado correctamente.");
     }
 
     @Override
@@ -43,7 +43,7 @@ public class SpawnersTimer extends JavaPlugin {
         if (dbManager != null) {
             dbManager.closeConnection();
         }
-        getLogger().info("¡SpawnersTimer se ha deshabilitado!");
+        getLogger().info("SpawnersTimer se ha deshabilitado.");
     }
 
     public SpawnerEventListener getSpawnerEventListener() {

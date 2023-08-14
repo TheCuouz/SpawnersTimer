@@ -1,0 +1,20 @@
+name: SpawnersTimer
+version: 1.0
+author: TheCuouz
+main: me.cuouz.spawnerstimer.SpawnersTimer
+description: Un plugin que gestiona las fechas de expiración de los spawners en el servidor.
+
+commands:
+  st:
+    description: Comando personalizado para visualizar la fecha de expiracion de el spawner en la mano del jugador.
+    usage: /st
+
+permissions:
+  spawnerstimer.admin:
+    description: Permite acceder a las funciones administrativas del plugin.
+  spawnerstimer.user:
+    description: Permite acceder a las funciones de usuario del plugin.
+
+
+
+dependencies: []

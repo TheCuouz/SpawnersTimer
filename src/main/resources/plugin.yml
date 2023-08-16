@@ -6,8 +6,15 @@ description: Un plugin que gestiona las fechas de expiración de los spawners en
 
 commands:
   st:
-    description: Comando personalizado para visualizar la fecha de expiracion de el spawner en la mano del jugador.
+    description: Comando principal
     usage: /st
+  givespawner:
+    description: Comando para dar spawners a un jugador
+    usage: /givespawner <jugador> <entidad>
+
+
+
+
 
 permissions:
   spawnerstimer.admin:

@@ -1,8 +1,4 @@
 # SpawnersTimer configuration file
-
-# Información de inicialización
-initialized: false
-
 # Tiempo de duracion por defecto en segundos
 
 default_duration: 86400
@@ -15,6 +11,6 @@ messages:
 
 
 commands:
-    spawner:
+    st:
       description: El comando que permite al jugador checkear la fecha de expiracion del spawner que tiene en la mano
       usage: /st check

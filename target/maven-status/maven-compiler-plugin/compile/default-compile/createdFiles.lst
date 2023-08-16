@@ -1,5 +1,7 @@
 me\cuouz\spawnerstimer\Listeners\DatabaseManager.class
-me\cuouz\spawnerstimer\Listeners\LimitedSpawnDuration.class
 me\cuouz\spawnerstimer\SpawnersTimer.class
+me\cuouz\spawnerstimer\Commands\GiveSpawnerCommand.class
 me\cuouz\spawnerstimer\Listeners\SpawnerEventListener.class
+me\cuouz\spawnerstimer\SpawnerObtainEvent.class
+me\cuouz\spawnerstimer\Listeners\ItemStackUtils.class
 me\cuouz\spawnerstimer\Commands\SpawnerCommand.class

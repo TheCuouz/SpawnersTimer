@@ -1,11 +1,11 @@
+// Clase principal
 package me.cuouz.spawnerstimer;
 
-import me.cuouz.spawnerstimer.Commands.SpawnerCommand;
-import me.cuouz.spawnerstimer.Listeners.DatabaseManager;
-import me.cuouz.spawnerstimer.Listeners.SpawnerEventListener;
-import org.bukkit.plugin.java.JavaPlugin;
-
-import java.io.File;
+import me.cuouz.spawnerstimer.Commands.*;
+import me.cuouz.spawnerstimer.Listeners.*;
+import org.bukkit.configuration.file.*;
+import org.bukkit.plugin.java.*;
+import java.io.*;
 
 public class SpawnersTimer extends JavaPlugin {
 
@@ -14,28 +14,38 @@ public class SpawnersTimer extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        if (!getConfig().contains("initialized")) {
-            getConfig().set("initialized", false);
+        FileConfiguration config = getConfig();
+
+        // Verificar si el plugin ya ha sido inicializado
+        if (!config.contains("initialized")) {
+            config.set("initialized", false);
             saveConfig();
         }
 
-        boolean initialized = getConfig().getBoolean("initialized");
-        if (initialized) {
-            getLogger().warning("SpawnersTimer ya está habilitado.");
-            getServer().getPluginManager().disablePlugin(this);
-            return;
+        boolean initialized = config.getBoolean("initialized");
+        if (!initialized) {
+            // Inicializar el gestor de la base de datos y el oyente de spawners
+            dbManager = new DatabaseManager(new File(getDataFolder(), "database.db").getAbsolutePath(), this);
+            spawnerEventListener = new SpawnerEventListener(this, dbManager);
+
+            // Registrar el evento personalizado SpawnerObtainEvent
+            getServer().getPluginManager().registerEvents(spawnerEventListener, this);
+
+            // Duración predeterminada de 4 horas (4 * 60 * 60 * 1000 milisegundos)
+            long defaultDuration = 4 * 60 * 60 * 1000;
+
+            // Crear instancia del comando SpawnerCommand con duración predeterminada
+            SpawnerCommand spawnerCommand = new SpawnerCommand(this, dbManager, defaultDuration);
+
+            // Registrar el comando SpawnerCommand
+            getCommand("st").setExecutor(spawnerCommand);
+
+            // Marcar el plugin como inicializado y guardar la configuración
+            config.set("initialized", true);
+            saveConfig();
+
+            getLogger().info("SpawnersTimer se ha habilitado correctamente.");
         }
-
-        dbManager = new DatabaseManager(new File(getDataFolder(), "database.db").getAbsolutePath(), this);
-        spawnerEventListener = new SpawnerEventListener(this);
-
-        getServer().getPluginManager().registerEvents(spawnerEventListener, this);
-        getCommand("st").setExecutor(new SpawnerCommand(this));
-
-        getConfig().set("initialized", true);
-        saveConfig();
-
-        getLogger().info("SpawnersTimer se ha habilitado correctamente.");
     }
 
     @Override
@@ -43,6 +53,11 @@ public class SpawnersTimer extends JavaPlugin {
         if (dbManager != null) {
             dbManager.closeConnection();
         }
+
+        // Marcar el plugin como no inicializado y guardar la configuración
+        getConfig().set("initialized", false);
+        saveConfig();
+
         getLogger().info("SpawnersTimer se ha deshabilitado.");
     }
 
